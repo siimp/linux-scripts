@@ -11,8 +11,6 @@ hostnamectl set-hostname hostname-here
 ### start and autostart service
 ```
 sudo systemctl start service-name-here
-```
-```
 sudo systemctl enable service-name-here
 ```
 ### open port
