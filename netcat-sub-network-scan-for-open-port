@@ -1,0 +1,33 @@
+#!/usr/bin/env sh
+
+IP_SUB_24=$1
+PORT=$2
+SUBNET_FROM=$3
+SUBNET_TO=$4
+OPEN_IN_BROWSER=$5
+SUB_PROCESSES=10
+BROWSER_COMMAND='/usr/bin/google-chrome-stable %U --disk-cache-dir=/dev/null '
+
+if test "$PORT" = "" || test "$SUBNET_FROM" = "" || test "$SUBNET_TO" = ""; then
+    echo "usage ./program [IP w/o sub 24] [PORT] [SUBNET FROM] [SUBNET TO] [open in browser true/false] \
+       \neg ./program 192.168.1 80 1 255 true"
+    exit
+fi
+
+echo "looking for open port $PORT in IP range $IP_SUB_24.$SUBNET_FROM - $IP_SUB_24.$SUBNET_TO"
+
+for i in $(seq $SUBNET_FROM $SUBNET_TO); do 
+  { 
+    echo "$i. $IP_SUB_24.$i:$PORT";
+    result=$(nc -v -z -w 1 $IP_SUB_24.$i $PORT 2>&1 | grep "open");
+     
+    if test "$result" != "" && test "$OPEN_IN_BROWSER" = true; then
+      $($BROWSER_COMMAND $IP_SUB_24.$i:$PORT)
+    fi
+  } &
+
+  # if maximum sub processes are exeeded we will wait them to complete
+  if [ $((i%$SUB_PROCESSES)) -eq 0 ]; then
+    wait;
+  fi
+done
