@@ -1,4 +1,2 @@
-# linux-scripts
-Repo for basic linux scripts
----
-## Using these scripts for EVIL is strongly prohibited
+# Collection of simple Linux scripts
+## Using these scripts for EVIL is strongly prohibited!!!
