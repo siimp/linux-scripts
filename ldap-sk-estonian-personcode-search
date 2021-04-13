@@ -30,7 +30,7 @@ for ((idcode = IDCODE_START; idcode < IDCODE_END; idcode++)); do
   fi
    
   if (($chk == ${idcode:10:1})); then
-    ldapsearch -x -h ldap.sk.ee -b c=EE "(serialNumber=$idcode)" "objectClass=top"
+    ldapsearch -H ldaps://esteid.ldap.sk.ee -x -b "c=EE" "(serialNumber=PNOEE-$idcode)" "objectClass=top"
     sleep 3
   fi
 done
